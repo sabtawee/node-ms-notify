@@ -7,21 +7,24 @@ const url =
 // Initialize
 const webhook = new IncomingWebhook(url);
 
-
 const getItAction = async (req, res) => {
-
   try {
+    //API KEY หาจาก https://www.jotform.com/myaccount/api
     jf.options({
       debug: true,
       apiKey: "9e8b204ca8931071716ddcf5cd3750ff",
     });
+
+    //เลขไอดี
     let sid = "222908663377466";
+
 
     jf.getFormSubmissions(sid)
       .then(function (r) {
         // console.log(r[0].answers);
         let datas = r[0].answers;
         console.log(r[0]);
+        console.log(datas["17"].answer[0])
         webhook.send(
           JSON.stringify({
             "@type": "MessageCard",
@@ -41,12 +44,36 @@ const getItAction = async (req, res) => {
                     value: datas["7"].answer,
                   },
                   {
-                    name: datas["17"].text,
+                    name: datas["13"].text,
+                    value: datas["13"].answer,
+                  },
+                  {
+                    name: "ขอดำเนินการ ",
+                    value: datas["15"].answer,
+                  },
+                  {
+                    name: "รายละเอียด",
                     value: datas["17"].prettyFormat,
                   },
                   {
-                    name: "Status",
+                    name: datas["20"].text,
+                    value: datas["20"].answer,
+                  },
+                  {
+                    name: datas["26"].text,
+                    value: datas["26"].answer,
+                  },
+                  {
+                    name: datas["39"].text,
+                    value: datas["39"].answer,
+                  },
+                  {
+                    name: "แก้ไขสถานะ",
                     value: "Link แก้ไข : https://www.jotform.com/edit/" + r[0].id,
+                  },
+                  {
+                    name: "รายงานใบดำเนินการ :",
+                    value: "https://www.jotform.com/grid/212638660059055",
                   },
                 ],
                 markdown: true,
