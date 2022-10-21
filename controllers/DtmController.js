@@ -18,69 +18,88 @@ const getItAction = async (req, res) => {
     //เลขไอดี
     let sid = "212090774349055";
 
-
     jf.getFormSubmissions(sid)
       .then(function (r) {
         // console.log(r[0].answers);
         let datas = r[0].answers;
         console.log(r[0]);
-        console.log(datas["17"].answer[0])
-        webhook.send(
-          JSON.stringify({
-            "@type": "MessageCard",
-            "@context": "https://schema.org/extensions",
-            summary: "Issue 176715375",
-            themeColor: "F11547",
-            title: datas['1'].text,
-            sections: [
-              {
-                activityTitle: datas['5'].answer,
-                activitySubtitle: datas["6"].prettyFormat,
-                activityImage:
-                  "https://veninecable.files.wordpress.com/2022/06/55.png",
-                facts: [
-                  {
-                    name: datas["7"].text,
-                    value: datas["7"].answer,
-                  },
-                  {
-                    name: datas["13"].text,
-                    value: datas["13"].answer,
-                  },
-                  {
-                    name: "ขอดำเนินการ ",
-                    value: datas["15"].answer,
-                  },
-                  {
-                    name: "รายละเอียด",
-                    value: datas["17"].prettyFormat,
-                  },
-                  {
-                    name: datas["20"].text,
-                    value: datas["20"].answer,
-                  },
-                  {
-                    name: datas["26"].text,
-                    value: datas["26"].answer,
-                  },
-                  {
-                    name: datas["39"].text,
-                    value: datas["39"].answer,
-                  },
-                  {
-                    name: "แก้ไขสถานะ",
-                    value: "Link แก้ไข : https://www.jotform.com/edit/" + r[0].id,
-                  },
-                  {
-                    name: "รายงานใบดำเนินการ :",
-                    value: "https://www.jotform.com/grid/212638660059055",
-                  },
-                ],
-                markdown: true,
-              },
-            ],
-          })
-        );
+        console.log(datas["17"].answer[0]);
+
+        if (datas["26"].answer == "อนุมัติ") {
+          console.log("true");
+        } else {
+          webhook.send(
+            JSON.stringify({
+              "@type": "MessageCard",
+              "@context": "https://schema.org/extensions",
+              summary: "Issue 176715375",
+              themeColor: "F11547",
+              title: datas["1"].text,
+              sections: [
+                {
+                  activityTitle: datas["5"].answer,
+                  activitySubtitle: datas["6"].prettyFormat,
+                  activityImage:
+                    "https://veninecable.files.wordpress.com/2022/06/55.png",
+                  facts: [
+                    {
+                      name: datas["7"].text,
+                      value: datas["7"].answer,
+                    },
+                    {
+                      name: datas["13"].text,
+                      value: datas["13"].answer,
+                    },
+                    {
+                      name: "ขอดำเนินการ ",
+                      value: datas["15"].answer,
+                    },
+                    {
+                      name: "รายละเอียด",
+                      value: datas["17"].prettyFormat,
+                    },
+                    {
+                      name: datas["20"].text,
+                      value: datas["20"].answer,
+                    },
+                    {
+                      name: datas["26"].text,
+                      value: datas["26"].answer,
+                    },
+                    {
+                      name: datas["39"].text,
+                      value: datas["39"].answer,
+                    },
+                  ],
+                  markdown: true,
+                },
+              ],
+              potentialAction: [
+                {
+                  "@type": "OpenUri",
+                  name: "Link แก้ไข",
+                  targets: [
+                    {
+                      os: "default",
+                      uri: "https://www.jotform.com/edit/" + r[0].id,
+                    },
+                  ],
+                },
+                {
+                  "@type": "OpenUri",
+                  name: "รายงานใบดำเนินการ",
+                  targets: [
+                    {
+                      os: "default",
+                      uri: "https://www.jotform.com/grid/212638660059055",
+                    },
+                  ],
+                },
+                
+              ],
+            })
+          );
+        }
       })
       .fail(function (e) {
         console.log(e);
@@ -89,5 +108,6 @@ const getItAction = async (req, res) => {
     console.log({ message: error.message });
   }
 };
-
+// abcdef0101
+// 1510089427
 module.exports = { getItAction };
